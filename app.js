@@ -42,12 +42,16 @@ var imgEl1 = document.getElementById('random1');
 var imgEl2 = document.getElementById('random2');
 var imgEl3 = document.getElementById('random3');
 
-imgEl1.addEventListener('click', randomIndexes);
+
+imgEl1.addEventListener('click', function(){
+  randomIndexes(imgEl1);
+}, false);
+
 imgEl2.addEventListener('click', randomIndexes);
 imgEl3.addEventListener('click', randomIndexes);
 
 function generatePictures(one, two, three) {
- //listener, something to be clicked...events!!!
+//listener, something to be clicked...events!!!
 
   Picture.allPictures[one].pictureShown += 1;
   Picture.allPictures[two].pictureShown += 1;
@@ -57,7 +61,10 @@ function generatePictures(one, two, three) {
   imgEl2.src = Picture.allPictures[two].filepath;// if first condition is 0, then the remainder 
   imgEl3.src = Picture.allPictures[three].filepath;
 
-  console.log(Picture.allPictures);
+  imgEl1.title = one; //this is always going to work because there is no modulo involved so randomIndex will always be a number
+  imgEl2.title = two;// if first condition is 0, then the remainder 
+  imgEl3.title = three;
+
 }
 
 // imgEl1.id = Picture.allPictures[0].name;
@@ -74,7 +81,10 @@ function randomNumber(length) {
 }
 
 //randomly display one of the pictures
-function randomIndexes() {
+function randomIndexes(htmlObject) {
+  console.log(htmlObject);
+  var picturedChosen = Picture.allPictures[htmlObject.title];
+  picturedChosen.pictureClicked += 1;
   // console.log(imgEl1.pictureShown, imgEl2.pictureShown, imgEl3.pictureShown)
 
   var len = Picture.allPictures.length;//created var len to not  have to keep using Picture.allPictures
@@ -95,7 +105,6 @@ function randomIndexes() {
   // imgEl2.pictureShown+=1;
   // imgEl3.pictureShown+=1
 
-  console.log(randomIndex,secondIndex, lastIndex);
 
 
   // if (randomIndex > 0) { // 0 is the edge case, anything % 0 = NaN beacuse no remainder so it breaks the code because we are unable to access an array item without a number
@@ -108,9 +117,8 @@ function randomIndexes() {
   //   randomPicture();
   // }
 }
-
-
 randomIndexes();
+
 
 // //array to store objects//
 
