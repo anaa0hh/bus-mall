@@ -5,11 +5,12 @@ Picture.allPictures = [];
 
 
 //make my constructor function
-function Picture(name, filepath, pictureShown, pictureClicked) {
+function Picture(name, filepath) {
   this.name = name;
   this.filepath = filepath;
-  this.pictureShown = pictureShown;
-  this.pictureClicked = pictureClicked;
+  this.pictureShown = 0;
+  this.pictureClicked = 0;
+
   Picture.allPictures.push(this);
 //   console.log(Picture.allPictures);
 }
@@ -29,49 +30,72 @@ new Picture('cthulhu', 'images/cthulhu.jpg');
 new Picture('dog-duck', 'images/dog-duck.jpg');
 new Picture('dragon', 'images/dragon.jpg');
 new Picture('pen', 'images/pen.jpg');
-// new Picture('pet-sweep', 'images/pet-sweep.jpg');
-// new Picture('tauntaun', 'images/tauntaun.jpg');
-// new Picture('unicorn', 'images/unicorn.jpg');
-// new Picture('usb', 'images/usb.gif');
-// new Picture('water-can', 'images/water-can.jpg');
-// new Picture('wine-glass', 'images/wine-glass.jpg');
+new Picture('pet-sweep', 'images/pet-sweep.jpg');
+new Picture('tauntaun', 'images/tauntaun.jpg');
+new Picture('unicorn', 'images/unicorn.jpg');
+new Picture('usb', 'images/usb.gif');
+new Picture('water-can', 'images/water-can.jpg');
+new Picture('wine-glass', 'images/wine-glass.jpg');
 // console.log(Picture.allPictures);
-//listener, something to be clicked...events!!!
+
 var imgEl1 = document.getElementById('random1');
 var imgEl2 = document.getElementById('random2');
 var imgEl3 = document.getElementById('random3');
 
-imgEl1.addEventListener('click', randomPicture);
-imgEl2.addEventListener('click', randomPicture);
-imgEl3.addEventListener('click', randomPicture);
+imgEl1.addEventListener('click', randomIndexes);
+imgEl2.addEventListener('click', randomIndexes);
+imgEl3.addEventListener('click', randomIndexes);
 
+function generatePictures(one, two, three) {
+ //listener, something to be clicked...events!!!
 
-/////////creating this function for the random index, allows us to use the length of the array Picture.allPictures at whatever moment we are calling that function(makes it more dynamic in case you want to add or remove)
-function createRandomIndex(length) {
+  Picture.allPictures[one].pictureShown += 1;
+  Picture.allPictures[two].pictureShown += 1;
+  Picture.allPictures[three].pictureShown += 1;
+
+  imgEl1.src = Picture.allPictures[one].filepath; //this is always going to work because there is no modulo involved so randomIndex will always be a number
+  imgEl2.src = Picture.allPictures[two].filepath;// if first condition is 0, then the remainder 
+  imgEl3.src = Picture.allPictures[three].filepath;
+
+  console.log(Picture.allPictures);
+}
+
+// imgEl1.id = Picture.allPictures[0].name;
+// imgEl2.id = Picture.allPictures[1].name;
+// imgEl3.id = Picture.allPictures[2].name;
+
+// imgEl1.src = Picture.allPictures[0].filepath;
+// imgEl2.src = Picture.allPictures[1].filepath;
+// imgEl3.src = Picture.allPictures[2].filepath;
+
+//creating this function for the random index, allows us to use the length of the array Picture.allPictures at whatever moment we are calling that function(makes it more dynamic in case you want to add or remove)
+function randomNumber(length) {
   return Math.floor(Math.random() * length); 
 }
 
 //randomly display one of the pictures
-function randomPicture() {
+function randomIndexes() {
+  // console.log(imgEl1.pictureShown, imgEl2.pictureShown, imgEl3.pictureShown)
 
   var len = Picture.allPictures.length;//created var len to not  have to keep using Picture.allPictures
-  var randomIndex = createRandomIndex(len); //randomIndex is the first image that is displayed
+  var randomIndex = randomNumber(len); //randomIndex is the first image that is displayed
 
-  let secondIndex = createRandomIndex(len); //secondIndex is the second image that is displayed
+  let secondIndex = randomNumber(len); //secondIndex is the second image that is displayed
   while (secondIndex === randomIndex) {
-    secondIndex = createRandomIndex(len); //this assigns the secondIndex the value of function randomIndex(len)
+    secondIndex = randomNumber(len); //this assigns the secondIndex the value of function randomIndex(len)
   }
 
-  let lastIndex = createRandomIndex(len); //lastIndex is the third image that is displayed
+  let lastIndex = randomNumber(len); //lastIndex is the third image that is displayed
   while (lastIndex === secondIndex || lastIndex === randomIndex) {
-    lastIndex = createRandomIndex(len); //this assigns lastIndex to the value of function(len)
+    lastIndex = randomNumber(len); //this assigns lastIndex to the value of function(len)
   }
 
-  imgEl1.src = Picture.allPictures[randomIndex].filepath; //this is always going to work because there is no modulo involved so randomIndex will always be a number
-  imgEl2.src = Picture.allPictures[secondIndex].filepath;// if first condition is 0, then the remainder 
-  imgEl3.src = Picture.allPictures[lastIndex].filepath;
+  generatePictures(randomIndex, secondIndex, lastIndex);
+  // imgEl1.pictureShown+=1;
+  // imgEl2.pictureShown+=1;
+  // imgEl3.pictureShown+=1
 
-  console.log(randomIndex,secondIndex, lastIndex)
+  console.log(randomIndex,secondIndex, lastIndex);
 
 
   // if (randomIndex > 0) { // 0 is the edge case, anything % 0 = NaN beacuse no remainder so it breaks the code because we are unable to access an array item without a number
@@ -86,7 +110,7 @@ function randomPicture() {
 }
 
 
-randomPicture();
+randomIndexes();
 
 // //array to store objects//
 
