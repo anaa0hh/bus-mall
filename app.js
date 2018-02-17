@@ -1,7 +1,10 @@
 'use strict';
 //array to store the objects
 Picture.allPictures = [];
+var totalClicks = 0;
+
 // console.log(Picture.allPictures);
+
 
 
 //make my constructor function
@@ -12,31 +15,33 @@ function Picture(name, filepath) {
   this.pictureClicked = 0;
 
   Picture.allPictures.push(this);
-
 }
 
 //use my constructor function to create new Picture instances
 new Picture('Bag','images/bag.jpg');
 new Picture('Banana', 'images/banana.jpg');
-new Picture('bathroom', 'images/bathroom.jpg');
-new Picture('boots', 'images/boots.jpg');
-new Picture('breakfast', 'images/breakfast.jpg');
-new Picture('bubblegum', 'images/bubblegum.jpg');
-new Picture('chair', 'images/chair.jpg');
-new Picture('cthulhu', 'images/cthulhu.jpg');
-new Picture('dog-duck', 'images/dog-duck.jpg');
-new Picture('dragon', 'images/dragon.jpg');
-new Picture('pen', 'images/pen.jpg');
-new Picture('pet-sweep', 'images/pet-sweep.jpg');
-new Picture('tauntaun', 'images/tauntaun.jpg');
-new Picture('unicorn', 'images/unicorn.jpg');
-new Picture('usb', 'images/usb.gif');
-new Picture('water-can', 'images/water-can.jpg');
-new Picture('wine-glass', 'images/wine-glass.jpg');
+new Picture('Bathroom', 'images/bathroom.jpg');
+new Picture('Boots', 'images/boots.jpg');
+new Picture('Breakfast', 'images/breakfast.jpg');
+new Picture('Bubblegum', 'images/bubblegum.jpg');
+new Picture('Bhair', 'images/chair.jpg');
+new Picture('Bthulhu', 'images/cthulhu.jpg');
+new Picture('Dog-Duck', 'images/dog-duck.jpg');
+new Picture('Dragon', 'images/dragon.jpg');
+new Picture('Pen', 'images/pen.jpg');
+new Picture('Pet-Sweep', 'images/pet-sweep.jpg');
+new Picture('Tauntaun', 'images/tauntaun.jpg');
+new Picture('Unicorn', 'images/unicorn.jpg');
+new Picture('USB', 'images/usb.gif');
+new Picture('Water-Can', 'images/water-can.jpg');
+new Picture('Wine-Glass', 'images/wine-glass.jpg');
 
 var imgEl1 = document.getElementById('random1');
 var imgEl2 = document.getElementById('random2');
 var imgEl3 = document.getElementById('random3');
+
+// console.log(Picture.allPictures);
+
 
 /////////////////////////////////EVENT LISTENERS////////////////////////////////////////
 imgEl1.addEventListener('click', function(){
@@ -50,7 +55,7 @@ imgEl3.addEventListener('click', function(){
 }, false);
 
 
-//////////FUNCTION TO DISPLAY IMAGES//////////////////////
+////////////////////////////////////////////FUNCTION TO DISPLAY IMAGES//////////////////////
 function generatePictures(one, two, three) {
 
   Picture.allPictures[one].pictureShown += 1;
@@ -61,7 +66,7 @@ function generatePictures(one, two, three) {
   imgEl2.src = Picture.allPictures[two].filepath;
   imgEl3.src = Picture.allPictures[three].filepath;
 
-  imgEl1.title = one; 
+  imgEl1.title = one;
   imgEl2.title = two;
   imgEl3.title = three;
 
@@ -73,19 +78,39 @@ function randomNumber(length) {
   return Math.floor(Math.random() * length);
 }
 
+
+function showTally() {
+  var tally = document.getElementById('tally');
+  for(var i = 0; i < Picture.allPictures.length; i++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = Picture.allPictures[i].name + ' has ' + Picture.allPictures[i].pictureClicked + ' votes in ' + Picture.allPictures[i].pictureShown + ' views.';
+    console.log(liEl);
+
+    tally.appendChild(liEl);
+
+  }
+
+}
+
+
 //randomly display one of the pictures
 function randomIndexes(htmlObject) {
   if (htmlObject === undefined) {
     htmlObject = imgEl1;
   } else {
-    var picturedChosen = Picture.allPictures[Number(htmlObject.title)];
-    picturedChosen.pictureClicked += 1;
-  // console.log(imgEl1.pictureShown, imgEl2.pictureShown, imgEl3.pictureShown)
+    var pictureChosen = Picture.allPictures[Number(htmlObject.title)];
+    pictureChosen.pictureClicked += 1;
+    totalClicks +=1;
   }
 
-  console.log(picturedChosen);
+
+  // console.log(imgEl1.pictureShown, imgEl2.pictureShown, imgEl3.pictureShown)
+
+  // console.log(pictureChosen);
+
+
   var len = Picture.allPictures.length;//created var len to not  have to keep using Picture.allPictures
-  
+
   var randomIndex = randomNumber(len); //randomIndex is the first image that is displayed
   let secondIndex = randomNumber(len); //secondIndex is the second image that is displayed
   while (secondIndex === randomIndex) {
@@ -98,50 +123,53 @@ function randomIndexes(htmlObject) {
 
   generatePictures(randomIndex, secondIndex, lastIndex);
 
-  
+  if (totalClicks === 25) {
+    imgEl1.removeEventListener('click', generatePictures);
+    //console.log('IMG EL1 FROM REMOVE EVENTS' + imgEl1);
+    imgEl2.removeEventListener('click', generatePictures);
+    imgEl3.removeEventListener('click', generatePictures); 
+    showTally();
+  }
 
-
-
-//this is always going to work because there is no modulo involved so randomIndex will always be a number
-// if first condition is 0, then the remainder 
-//modulo is used for rotating through an array if you have a weird starting point, it returns the remainder
-
-
-// imgEl1.id = Picture.allPictures[0].name;
-// imgEl2.id = Picture.allPictures[1].name;
-// imgEl3.id = Picture.allPictures[2].name;
-
-// imgEl1.src = Picture.allPictures[0].filepath;
-// imgEl2.src = Picture.allPictures[1].filepath;
-// imgEl3.src = Picture.allPictures[2].filepath;
-  // imgEl1.pictureShown+=1;
-  // imgEl2.pictureShown+=1;
-  // imgEl3.pictureShown+=1
-
-
-
-  // if (randomIndex > 0) { // 0 is the edge case, anything % 0 = NaN beacuse no remainder so it breaks the code because we are unable to access an array item without a number
-  // imgEl1.src = Picture.allPictures[randomIndex].filepath; //this is always going to work because there is no modulo involved so randomIndex will always be a number
-  // imgEl2.src = Picture.allPictures[(len+1)%randomIndex].filepath;// if first condition is 0, then the remainder 
-  // imgEl3.src = Picture.allPictures[(len+2)%randomIndex].filepath;
-  // console.log(randomIndex, len%randomIndex, ((len%randomIndex)+1))
-  // console.log(randomIndex, (len)%(randomIndex+1), (len)%(randomIndex+2))
-  // } else { //if its 0, then run the code again
-  //   randomPicture();
-  // }
 }
 randomIndexes();
 
 
-// //array to store objects//
-
-// pictures.listOfImages = [];
-// ////////////////////constructor function//////////////////
-// function RandomImages(name, filepath, imageShown, imageClicked) {
-//   this.name = name;
-//   this.filepath = filepath;
-//   this.imageShown = imageShown;
-//   this.imageClicked = imageClicked;
-
-
-// }
+//////////////////////////////////////////CHART IS BELOW///////////////////////////////////////////////
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero:true
+        }
+      }]
+    }
+  }
+});
