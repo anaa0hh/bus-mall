@@ -44,16 +44,20 @@ var imgEl3 = document.getElementById('random3');
 // console.log(Picture.allPictures);
 
 
-/////////////////////////////////EVENT LISTENERS////////////////////////////////////////
-imgEl1.addEventListener('click', function(){
+function fuckthis() {
   randomIndexes(imgEl1);
-}, false);
-imgEl2.addEventListener('click', function(){
+}
+function fuckthis2() {
   randomIndexes(imgEl2);
-}, false);
-imgEl3.addEventListener('click', function(){
+
+}
+function fuckthis3() {
   randomIndexes(imgEl3);
-}, false);
+}
+/////////////////////////////////EVENT LISTENERS////////////////////////////////////////
+imgEl1.addEventListener('click', fuckthis);
+imgEl2.addEventListener('click', fuckthis2);
+imgEl3.addEventListener('click', fuckthis3);
 
 
 ////////////////////////////////////////////FUNCTION TO DISPLAY IMAGES//////////////////////
@@ -125,10 +129,10 @@ function randomIndexes(htmlObject) {
   generatePictures(randomIndex, secondIndex, lastIndex);
 
   if (totalClicks === 25) {
-    imgEl1.removeEventListener('click', generatePictures);
-    //console.log('IMG EL1 FROM REMOVE EVENTS' + imgEl1);
-    imgEl2.removeEventListener('click', generatePictures);
-    imgEl3.removeEventListener('click', generatePictures); 
+    imgEl1.removeEventListener('click', fuckthis);
+    imgEl2.removeEventListener('click', fuckthis2);
+    imgEl3.removeEventListener('click', fuckthis3);
+    
     showTally();
     makeChart();
   }
@@ -162,8 +166,7 @@ function makeChart() {
       { label: '# of Times Shown',
         data: numViews,
         backgroundColor: 'green',
-      }]
-    },
+      }] },
     options: {
       scales: {
         yAxes: [{
