@@ -41,23 +41,25 @@ var imgEl1 = document.getElementById('random1');
 var imgEl2 = document.getElementById('random2');
 var imgEl3 = document.getElementById('random3');
 
+
+
 // console.log(Picture.allPictures);
 
 
-function fuckthis() {
+function addAndRemove() {
   randomIndexes(imgEl1);
 }
-function fuckthis2() {
+function addAndRemove2() {
   randomIndexes(imgEl2);
 
 }
-function fuckthis3() {
+function addAndRemove3() {
   randomIndexes(imgEl3);
 }
 /////////////////////////////////EVENT LISTENERS////////////////////////////////////////
-imgEl1.addEventListener('click', fuckthis);
-imgEl2.addEventListener('click', fuckthis2);
-imgEl3.addEventListener('click', fuckthis3);
+imgEl1.addEventListener('click', addAndRemove);
+imgEl2.addEventListener('click', addAndRemove2);
+imgEl3.addEventListener('click', addAndRemove3);
 
 
 ////////////////////////////////////////////FUNCTION TO DISPLAY IMAGES//////////////////////
@@ -129,16 +131,27 @@ function randomIndexes(htmlObject) {
   generatePictures(randomIndex, secondIndex, lastIndex);
 
   if (totalClicks === 25) {
-    imgEl1.removeEventListener('click', fuckthis);
-    imgEl2.removeEventListener('click', fuckthis2);
-    imgEl3.removeEventListener('click', fuckthis3);
-    
+    imgEl1.removeEventListener('click', addAndRemove);
+    imgEl2.removeEventListener('click', addAndRemove2);
+    imgEl3.removeEventListener('click', addAndRemove3);
+ 
     showTally();
     makeChart();
+
+    var allImagesString =JSON.stringify(Picture.allPictures);
+    localStorage.setItem('storeData', allImagesString);
   }
+  
 
 }
 randomIndexes();
+
+if (localStorage.getItem('storeData')) {
+  Picture.allPictures = JSON.parse(localStorage.getItem('storeData'));
+  showTally();
+  makeChart();
+}
+
 
 
 //////////////////////////////////////////CHART IS BELOW///////////////////////////////////////////////
@@ -178,3 +191,4 @@ function makeChart() {
     }
   });
 }
+
